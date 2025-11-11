@@ -1,0 +1,105 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Subscription {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String
+  month_price BigInt
+  status      String
+  users       User[]
+}
+
+model User {
+  id              String        @id @default(uuid())
+  subscription_id String?
+  google_id       String?       @unique
+  email           String?       @unique
+  name            String?
+  number_phone    String?       @default("")
+  timezone        String?       @default("")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  emailVerified   Boolean       @default(false)
+  image           String?
+  accounts        Account[]
+  workspaces      Workspace[]
+  sessions        Session[]
+  subscription    Subscription? @relation(fields: [subscription_id], references: [id])
+
+  @@map("user")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  providerId            String
+  providerAccountId     String?
+  refreshToken          String?
+  accessToken           String?
+  expiresAt             DateTime?
+  tokenType             String?
+  scope                 String?
+  idToken               String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  accessTokenExpiresAt  DateTime?
+  password              String?
+  refreshTokenExpiresAt DateTime?
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accountId String
+
+  @@unique([providerId, providerAccountId])
+  @@map("account")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}
+
+model Workspace {
+  id             String @id @default(uuid())
+  user_id        String
+  name           String
+  workspace_type String
+  avatar         String
+  timezone       String
+  user           User   @relation(fields: [user_id], references: [id])
+}
+
+model Product {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  status      String
+}
