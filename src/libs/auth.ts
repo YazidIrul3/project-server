@@ -7,7 +7,6 @@ import {
   createNewSubscription,
   findSubscriptionByName,
 } from "../subcription/subscription.repository";
-import { User } from "@prisma/client";
 
 export const auth = betterAuth({
   socialProviders: {
@@ -31,7 +30,7 @@ export const auth = betterAuth({
 
   user: {
     additionalFields: {
-      subscription_id: {
+      subcriptionId: {
         type: "string",
         required: false,
         references: {
@@ -46,7 +45,9 @@ export const auth = betterAuth({
   },
 
   session: {
-    expiresIn: 60 * 60 * 7,
-    updateAge: 60 * 60,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60,
+    },
   },
 });

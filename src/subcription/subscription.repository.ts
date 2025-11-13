@@ -19,14 +19,14 @@ export const findAllSubcription = async () => {
 export const createNewSubscription = async (
   name: string,
   description: string,
-  month_price: number,
+  monthPrice: number,
   status: string
 ) => {
   const newSubscription = await prisma.subscription.create({
     data: {
       name: name,
       description: description,
-      month_price: month_price,
+      monthPrice: monthPrice,
       status: status,
     },
   });
@@ -38,7 +38,7 @@ export const findUpdateSubcriptionById = async (
   id: string,
   name: string,
   description: string,
-  month_price: number,
+  monthPrice: number,
   status: string
 ) => {
   await prisma.subscription.update({
@@ -48,7 +48,7 @@ export const findUpdateSubcriptionById = async (
     data: {
       name,
       description,
-      month_price,
+      monthPrice,
       status,
     },
   });
