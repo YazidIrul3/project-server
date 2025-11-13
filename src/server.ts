@@ -9,8 +9,9 @@ import { errorHandler } from "./middleware/error-handler";
 import { corsOption } from "./libs/cors";
 // import userRouter from "./user/user.controller";
 import { helmetConfig } from "./libs/helmet";
-import { toNodeHandler } from "better-auth/node";
+import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./libs/auth";
+import userRouter from "./user/user.controller";
 
 const cors = require("cors");
 const app = express();
@@ -26,8 +27,9 @@ app.use(helmetConfig);
 // middleware
 app.use(errorHandler);
 
-// app.use("/api/v1/auth", userRouter);
 app.all("/api/auth/*splat", toNodeHandler(auth)); // router
+app.use("/api/v1/auth", userRouter);
+
 app.use("/api/v1/subscription", apiKeyMiddleware, subscriptionRouter);
 
 // start the server

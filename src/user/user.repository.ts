@@ -16,16 +16,16 @@ interface AuthType {
 }
 
 interface UpdateBodyRequest {
-  name: string;
-  timezone: string;
-  number_phone: string;
-  subcription_id: string;
+  name?: string;
+  timezone?: string;
+  number_phone?: string;
+  subcriptionId?: string;
 }
 
 export const findUserById = async (id: string) => {
   const user = await prisma.user.findUnique({
     omit: {
-      subscription_id: true,
+      subscriptionId: true,
     },
     where: {
       id,
@@ -67,7 +67,7 @@ export const createUser = async (body: AuthType) => {
       number_phone: "",
       email: body.email,
       timezone: body.timezone || "",
-      subscription_id: freeSubscription.id, // sesuai schema
+      subscriptionId: freeSubscription.id, // sesuai schema
     },
   });
 };
@@ -81,7 +81,7 @@ export const updateUser = async (body: UpdateBodyRequest, userId: string) => {
       name: body?.name,
       number_phone: body?.number_phone,
       timezone: body?.timezone,
-      subscription_id: body?.subcription_id,
+      subscriptionId: body?.subcriptionId,
     },
   });
 };

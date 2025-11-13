@@ -26,15 +26,19 @@ export const createSubscriptionValidation = async (
   const isExist = await findSubscriptionByName(parsed?.data?.name);
 
   if (isExist) {
-    throw new AppError("Name already exist", 409);
+    // throw new AppError("Name already exist", 409);
+
+    return isExist
   }
   //  Create new data
   await createNewSubscription(
     parsed.data.name,
     parsed.data.description,
-    parsed.data.month_price,
+    parsed.data.monthPrice,
     parsed.data.status
   );
+
+  return isExist;
 };
 
 // PUT
@@ -48,7 +52,7 @@ export const updateSubscription = async (
     id,
     parsed.data.name,
     parsed.data.description,
-    parsed.data.month_price,
+    parsed.data.monthPrice,
     parsed.data.status
   );
 };
