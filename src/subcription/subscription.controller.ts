@@ -66,7 +66,7 @@ subscriptionRouter.put(
 
       await updateSubscription(params?.id, body);
 
-      return successResponse(res, 201, "Subscription updated");
+      return successResponse(res, "Subscription updated", 201);
     } catch (error) {
       logger.error(error);
 
@@ -85,7 +85,7 @@ subscriptionRouter.delete(
 
       await deleteSubscriptin(params?.id);
 
-      return successResponse(res, 201, "Subscription deleted");
+      return successResponse(res, "Subscription deleted", 201);
     } catch (error) {
       logger.error(error);
 

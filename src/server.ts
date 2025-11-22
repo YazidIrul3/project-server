@@ -12,6 +12,8 @@ import { helmetConfig } from "./libs/helmet";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./libs/auth";
 import userRouter from "./user/user.controller";
+import { authMiddleware } from "./middleware/authMiddleware";
+import workspaceRouter from "./workspace/workspace.controller";
 
 const cors = require("cors");
 const app = express();
@@ -28,14 +30,20 @@ app.use(helmetConfig);
 app.use(errorHandler);
 
 app.all("/api/auth/*splat", toNodeHandler(auth)); // router
-app.use("/api/v1/auth", userRouter);
 
-app.use("/api/v1/subscription", apiKeyMiddleware, subscriptionRouter);
+app.use("/api/v1/auth", userRouter);
+app.use(
+  "/api/v1/subscription",
+  authMiddleware,
+  apiKeyMiddleware,
+  subscriptionRouter
+);
+app.use("/api/v1/workspace", authMiddleware, apiKeyMiddleware, workspaceRouter);
 
 // start the server
 const server = app.listen(config.PORT, () => {
   logger.info(`server running on port ${config.PORT}`);
-});
+}); 
 
 // end the server
 process.on("unhandledRejection", (err: Error) => {
