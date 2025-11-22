@@ -8,3 +8,4 @@ export const subscriptionSchema = z.object({
 });
 
 export type SubcriptionBodyRequest = z.infer<typeof subscriptionSchema>;
+

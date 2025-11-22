@@ -28,7 +28,7 @@ export const createSubscriptionValidation = async (
   if (isExist) {
     // throw new AppError("Name already exist", 409);
 
-    return isExist
+    return isExist;
   }
   //  Create new data
   await createNewSubscription(
