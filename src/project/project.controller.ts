@@ -1,8 +1,13 @@
 import { logger } from "better-auth";
 import express, { Request, Response, NextFunction } from "express";
 import { validate } from "../middleware/validate";
-import { createProjectSchema } from "../schemas/project";
-import { getProjectById, postProject } from "./project.service";
+import { createProjectSchema, updateProjectSchema } from "../schemas/project";
+import {
+  deleteProject,
+  getProjectById,
+  postProject,
+  putProject,
+} from "./project.service";
 import { successResponse } from "../utils/response";
 
 const projectRouter = express.Router();
@@ -38,6 +43,42 @@ projectRouter.post(
       });
 
       successResponse(res, "Create project success", 201);
+    } catch (error) {
+      logger.error(error);
+
+      next(error);
+    }
+  }
+);
+
+projectRouter.put(
+  "/:id",
+  validate(updateProjectSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { params, body } = req;
+
+      await putProject(params.id, body);
+
+      successResponse(res, "Update project success", 201);
+    } catch (error) {
+      logger.error(error);
+
+      next(error);
+    }
+  }
+);
+
+projectRouter.delete(
+  "/:id",
+  validate(updateProjectSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { params } = req;
+
+      await deleteProject(params.id);
+
+      successResponse(res, "Delete project success", 201);
     } catch (error) {
       logger.error(error);
 
