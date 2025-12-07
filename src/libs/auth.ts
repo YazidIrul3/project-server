@@ -3,10 +3,6 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma";
 import config from "../config/config";
 import { createUser } from "../user/user.repository";
-import {
-  createNewSubscription,
-  findSubscriptionByName,
-} from "../subcription/subscription.repository";
 
 export const auth = betterAuth({
   socialProviders: {

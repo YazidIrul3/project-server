@@ -2,13 +2,19 @@ import express, { NextFunction, Request, Response } from "express";
 import { logger } from "../libs/winston";
 import {
   getWorkspace,
+  getWorkspacesByUserId,
   getWorkspaceByUserIdAndWorkspaceName,
   getWorkspaces,
   postWorkspace,
+  deleteWorkspace,
+  putWorkspace,
 } from "./workspace.service";
 import { successResponse } from "../utils/response";
 import { validate } from "../middleware/validate";
-import { createWorkspaceSchema } from "../schemas/workspace";
+import {
+  createWorkspaceSchema,
+  updateWorkspaceSchema,
+} from "../schemas/workspace";
 
 const workspaceRouter = express.Router();
 
@@ -26,6 +32,11 @@ workspaceRouter.get(
           user.toString(),
           name.toString()
         );
+
+        logger.info(data);
+        successResponse(res, "Fetched workspaces data success", 200, data);
+      } else if (user && !name) {
+        const data = await getWorkspacesByUserId(user.toString());
 
         logger.info(data);
         successResponse(res, "Fetched workspaces data success", 200, data);
@@ -73,7 +84,47 @@ workspaceRouter.post(
         workspaceTypeName: body.workspaceTypeName,
       });
 
+      logger.info(body);
+
       successResponse(res, "Workspaces created success", 201);
+    } catch (error) {
+      logger.error(error);
+
+      next(error);
+    }
+  }
+);
+
+workspaceRouter.put(
+  "/:id",
+  validate(updateWorkspaceSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { body, params } = req;
+
+      await putWorkspace(params?.id, {
+        name: body.name,
+        timezone: body.timezone,
+      });
+
+      successResponse(res, "Update workspace success", 201);
+    } catch (error) {
+      logger.error(error);
+
+      next(error);
+    }
+  }
+);
+
+workspaceRouter.delete(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+
+      await deleteWorkspace(id);
+
+      successResponse(res, "Delete workspace success", 201);
     } catch (error) {
       logger.error(error);
 

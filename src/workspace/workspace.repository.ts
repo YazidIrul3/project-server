@@ -1,4 +1,4 @@
-import { WorkspaceSchema } from "../schemas/workspace";
+import { UpdateWorkspaceSchema, WorkspaceSchema } from "../schemas/workspace";
 import prisma from "../libs/prisma";
 
 export const findWorkSpaceById = async (id: string) => {
@@ -11,10 +11,16 @@ export const findWorkSpaceById = async (id: string) => {
   return data;
 };
 
-export const findWorkspaceByUserId = async (userId: string) => {
-  const data = await prisma.workspace.findFirst({
+export const findWorkspacesByUserId = async (userId: string) => {
+  const data = await prisma.workspace.findMany({
     where: {
       userId,
+    },
+    include: {
+      user: true,
+    },
+    omit: {
+      userId: true,
     },
   });
 
@@ -52,6 +58,18 @@ export const findWorkspaceByUserAndName = async (
   return data;
 };
 
+export const findWorkspaceByType = (typeName: string) => {
+  const data = prisma.workspace.findMany({
+    where: {
+      workspaceType: {
+        name: typeName,
+      },
+    },
+  });
+
+  return data;
+};
+
 export const findWorkspaceByName = async (name: string) => {
   const data = await prisma.workspace.findFirst({
     where: {
@@ -73,13 +91,38 @@ export const findWorkSpaces = async () => {
 };
 
 export const createWorkspace = async (body: WorkspaceSchema) => {
-  await prisma.workspace.create({
+  const data = await prisma.workspace.create({
     data: {
       name: body.name,
       avatar: body.avatar,
       userId: body.userId,
       workspaceTypeId: body.workspaceTypeId,
       timezone: body.timezone,
+    },
+  });
+
+  return data;
+};
+
+export const updateWorkspace = async (
+  id: string,
+  body: UpdateWorkspaceSchema
+) => {
+  await prisma.workspace.update({
+    where: {
+      id,
+    },
+    data: {
+      name: body.name,
+      timezone: body.timezone,
+    },
+  });
+};
+
+export const removeWorkspaceById = async (id: string) => {
+  await prisma.workspace.delete({
+    where: {
+      id,
     },
   });
 };
