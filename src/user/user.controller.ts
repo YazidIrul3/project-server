@@ -29,7 +29,7 @@ userRouter.get("/me", authMiddleware, async (req, res) => {
     await putUser({ subcriptionId: subs.id }, session!.user.id);
   }
 
-  logger.info(session);
+  // logger.info(session);
   res.status(200).send(
     JSONbig.stringify({
       data: user,

@@ -11,7 +11,7 @@ export const postWorkspaceType = async (body: CreateWorkspaceTypeSchema) => {
   const parsed = createWorkspaceTypeSchema.safeParse(body);
   const data = await findWorkSpaceTypeByName(parsed.data.name);
 
-  if (data.id) {
+  if (data) {
     return data;
   } else {
     const newWorkspaceType = await createWorkspaceType({

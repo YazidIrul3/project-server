@@ -16,5 +16,11 @@ export const createWorkspaceSchema = z.object({
   workspaceTypeName: z.string(),
 });
 
+export const updateWorkspaceSchema = z.object({
+  name: z.string().min(1),
+  timezone: z.string(),
+});
+
 export type WorkspaceSchema = z.infer<typeof workspaceSchema>;
 export type CreateWorkspaceSchema = z.infer<typeof createWorkspaceSchema>;
+export type UpdateWorkspaceSchema = z.infer<typeof updateWorkspaceSchema>;

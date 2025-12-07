@@ -32,7 +32,7 @@ model User {
   accounts             Account[]
   workspaces           Workspace[]
   sessions             Session[]
-  subscription         Subscription?         @relation(fields: [subscriptionId], references: [id])
+  subscription         Subscription?         @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   taskOwners           TaskOwner[]
   itemProjectAssigneds ItemProjectAssigned[]
   eventAttendees       EventAttendee[]
@@ -105,11 +105,11 @@ model Workspace {
   workspaceTypeId String
   avatar          String
   timezone        String   @default("Asia/Jakarta")
-  user            User     @relation(fields: [userId], references: [id])
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  workspaceType WorkspaceType @relation(fields: [workspaceTypeId], references: [id])
+  workspaceType WorkspaceType @relation(fields: [workspaceTypeId], references: [id], onDelete: Cascade)
   projects      Project[]
 }
 
@@ -131,8 +131,8 @@ model TaskOwner {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  task  Task @relation(fields: [taskId], references: [id])
-  owner User @relation(fields: [ownerId], references: [id])
+  task  Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Project {
@@ -142,7 +142,7 @@ model Project {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  workspace     Workspace      @relation(fields: [workspaceId], references: [id])
+  workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   projectGroups ProjectGroup[]
   itemProjects  ItemProject[]
 }
@@ -155,7 +155,7 @@ model ProjectGroup {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  project Project @relation(fields: [projectId], references: [id])
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model ItemProject {
@@ -171,7 +171,7 @@ model ItemProject {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  project       Project               @relation(fields: [projectId], references: [id])
+  project       Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
   assignedUsers ItemProjectAssigned[]
 }
 
@@ -187,8 +187,8 @@ model ItemProjectAssigned {
   userId        String
   assignedAt    DateTime @default(now())
 
-  itemProject ItemProject @relation(fields: [itemProjectId], references: [id])
-  user        User        @relation(fields: [userId], references: [id])
+  itemProject ItemProject @relation(fields: [itemProjectId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Event {
@@ -214,6 +214,6 @@ model EventAttendee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  event Event @relation(fields: [eventId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

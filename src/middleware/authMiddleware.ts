@@ -14,7 +14,6 @@ export const authMiddleware = async (
       headers: fromNodeHeaders(req.headers),
     });
     const token = req.headers.authorization.split(" ")[1];
-    // logger.info(token);
 
     if (token && session.session.token == token) {
       next();
