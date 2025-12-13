@@ -71,7 +71,6 @@ projectRouter.put(
 
 projectRouter.delete(
   "/:id",
-  validate(updateProjectSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { params } = req;

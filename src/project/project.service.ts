@@ -1,4 +1,5 @@
-import { postProjectGroup } from "../productGroup/projectGroup.service";
+import { logger } from "better-auth";
+import { postProjectsGroupTemplate } from "../productGroup/projectGroup.service";
 import {
   createProjectSchema,
   CreateProjectSchema,
@@ -20,9 +21,20 @@ export const getProjectById = async (id: string) => {
 
 export const postProject = async (body: CreateProjectSchema) => {
   const parsed = createProjectSchema.safeParse(body);
-  const project = await createProject(parsed.data);
+  const project = await createProject({
+    name: parsed.data.name,
+    template: parsed.data.template,
+    workspaceId: parsed.data.workspaceId,
+  });
 
-  await postProjectGroup(parsed.data.template, project.id);
+  logger.info("project ID" + project?.id);
+
+  const newProject = await postProjectsGroupTemplate(
+    parsed.data.template,
+    project.id
+  );
+
+  return newProject;
 };
 
 export const putProject = async (id: string, body: UpdateProjectSchema) => {

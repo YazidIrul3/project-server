@@ -24,21 +24,16 @@ workspaceRouter.get(
     try {
       const { user, name } = req.query;
 
-      logger.info(user.toString());
-      logger.info(name);
-
       if (user && name) {
         const data = await getWorkspaceByUserIdAndWorkspaceName(
           user.toString(),
           name.toString()
         );
 
-        logger.info(data);
         successResponse(res, "Fetched workspaces data success", 200, data);
       } else if (user && !name) {
         const data = await getWorkspacesByUserId(user.toString());
 
-        logger.info(data);
         successResponse(res, "Fetched workspaces data success", 200, data);
       }
 
@@ -83,8 +78,6 @@ workspaceRouter.post(
         userId: body.userId,
         workspaceTypeName: body.workspaceTypeName,
       });
-
-      logger.info(body);
 
       successResponse(res, "Workspaces created success", 201);
     } catch (error) {

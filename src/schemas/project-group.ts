@@ -6,4 +6,4 @@ export const createProjectGroupSchema = z.object({
   color: z.string(),
 });
 
-export type CreateProjectSchema = z.infer<typeof createProjectGroupSchema>;
+export type CreateProjectGroupSchema = z.infer<typeof createProjectGroupSchema>;

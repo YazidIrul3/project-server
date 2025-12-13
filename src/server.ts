@@ -14,6 +14,7 @@ import userRouter from "./user/user.controller";
 import { authMiddleware } from "./middleware/authMiddleware";
 import workspaceRouter from "./workspace/workspace.controller";
 import projectRouter from "./project/project.controller";
+import projectGroupRouter from "./productGroup/projectGroup.controller";
 
 const cors = require("cors");
 const app = express();
@@ -39,6 +40,12 @@ app.use(
   subscriptionRouter
 );
 app.use("/api/v1/project", authMiddleware, apiKeyMiddleware, projectRouter);
+app.use(
+  "/api/v1/projectGroup",
+  authMiddleware,
+  apiKeyMiddleware,
+  projectGroupRouter
+);
 app.use("/api/v1/workspace", authMiddleware, apiKeyMiddleware, workspaceRouter);
 
 // start the server
