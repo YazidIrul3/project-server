@@ -8,6 +8,9 @@ export const findProjectById = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      projectGroups: true,
+    },
   });
 
   return data;
@@ -19,6 +22,7 @@ export const createProject = async (body: CreateProjectSchema) => {
       name: body?.name,
       workspaceId: body?.workspaceId,
     },
+    
   });
 
   return project;

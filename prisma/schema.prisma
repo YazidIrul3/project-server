@@ -160,7 +160,7 @@ model ProjectGroup {
 
 model ItemProject {
   id          String       @id @default(uuid())
-  projectId   String
+  projectGroupId   String
   title       String
   description String
   startDate   DateTime
@@ -171,7 +171,7 @@ model ItemProject {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  project       Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectGroup       ProjectGroup             @relation(fields: [projectGroupId], references: [id], onDelete: Cascade)
   assignedUsers ItemProjectAssigned[]
 }
 
