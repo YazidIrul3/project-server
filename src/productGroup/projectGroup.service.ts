@@ -1,11 +1,15 @@
+import { putProject } from "project/project.service";
 import {
   createProjectGroupSchema,
   CreateProjectGroupSchema,
+  UpdateProjectGroupSchema,
 } from "../schemas/project-group";
 import {
   createProjectGroup,
   createTemplateProjectsGroup,
   findProjectGroupsByProjectId,
+  removeProjectGroup,
+  updateProjectGroup,
 } from "./projectGroup.repository";
 
 export const getProjectGroups = async (projectId: string) => {
@@ -23,4 +27,15 @@ export const postProjectsGroupTemplate = async (
   projectId: string
 ) => {
   await createTemplateProjectsGroup(template, projectId);
+};
+
+export const putProjectGroup = async (
+  id: string,
+  body: UpdateProjectGroupSchema
+) => {
+  await updateProjectGroup(id, body);
+};
+
+export const deleteProjectGroup = async (id: string) => {
+  await removeProjectGroup(id);
 };

@@ -1,5 +1,8 @@
 import prisma from "../libs/prisma";
-import { CreateProjectGroupSchema } from "../schemas/project-group";
+import {
+  CreateProjectGroupSchema,
+  UpdateProjectGroupSchema,
+} from "../schemas/project-group";
 
 export const findProjectGroupsByProjectId = async (projectId: string) => {
   await prisma.projectGroup.findMany({
@@ -32,4 +35,27 @@ export const createTemplateProjectsGroup = async (
       ],
     });
   }
+};
+
+export const updateProjectGroup = async (
+  id: string,
+  body: UpdateProjectGroupSchema
+) => {
+  await prisma.projectGroup.update({
+    where: {
+      id,
+    },
+    data: {
+      name: body.name,
+      color: body.color,
+    },
+  });
+};
+
+export const removeProjectGroup = async (id: string) => {
+  await prisma.projectGroup.delete({
+    where: {
+      id,
+    },
+  });
 };
